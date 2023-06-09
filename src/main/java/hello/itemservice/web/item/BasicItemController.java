@@ -86,16 +86,20 @@ public String item(@PathVariable Long itemId, Model model) {
         return "basic/item";
     }
 
+//    need to redirect to avoid repeated post requests upon refresh
+//    PRG(Post/Redirect/Get) pattern -> intro to PRG pattern
 //    @PostMapping("/add")
     public String addItemV5(Item item) {
         itemRepository.save(item);
-        return "redirect:/basic/items/" + item.getItemId();
+        return "redirect:/basic/items/" + item.getItemId(); //this is undesired, should this result in a String with a space, non supported langs -> is a cause for tons of bugs
     }
     @PostMapping("/add")
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getItemId());
         redirectAttributes.addAttribute("status", true);
+//        attributes not directly present in the return viewName String will be appended as a queryparameter,
+//        that can be utilised by the view later, through 'param. xxxx' -> exclusive(?) to thymeleaf
         return "redirect:/basic/items/{itemId}";
     }
 
@@ -107,10 +111,10 @@ public String item(@PathVariable Long itemId, Model model) {
         return "basic/editForm";
     }
 
-    @PostMapping ("/{itemID}/edit")
-    public String edit(@PathVariable Long itemID, @ModelAttribute Item item) {
-        itemRepository.update(itemID, item);
-        return "basic/item";
+    @PostMapping ("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";
     }
 
 

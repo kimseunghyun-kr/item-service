@@ -31,8 +31,8 @@
       </thead>
       <tbody>
       <tr th:each="item : ${items}">
-        <td><a href="item.html" th:href="@{/basic/items/{itemId}
-(itemId=${item.itemId})}" th:text="${item.itemId}">회원id</a></td>
+        <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.itemId})}"
+               th:text="${item.itemId}">회원id</a></td>
         <td><a href="item.html" th:href="@{|/basic/items/${item.itemId}|}"
                th:text="${item.itemName}">상품명</a></td>
         <td th:text="${item.price}">10000</td>
